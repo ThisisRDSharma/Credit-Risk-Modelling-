@@ -1,64 +1,76 @@
 
-
-from tabulate import tabulate
-
-print(tabulate(df, headers="keys", tablefmt="grid", showindex=False))
-
-
 import pandas as pd
 
-columns = pd.MultiIndex.from_tuples([
-    ("Employee", "Name"),
-    ("Employee", "ID"),
-    ("Performance", "Q1"),
-    ("Performance", "Q2"),
-    ("Performance", "Q3"),
-])
+# Read data
+df = pd.read_excel("table_voiceID.xlsx")
 
-data = [
-    ["Alice", 101, 85, 90, 88],
-    ["Bob", 102, 78, 82, 80],
-]
+# -------------------
+# Voice ID 1
+# -------------------
+voice1_df = df[df["1"] == True]
 
-df = pd.DataFrame(data, columns=columns)
+voice1_result = (
+    voice1_df
+    .groupby("Date", as_index=False)["recored"]
+    .sum()
+)
 
-print(df)
+print("Voice ID 1")
+print(voice1_result)
+
+# -------------------
+# Voice ID 2
+# -------------------
+voice2_df = df[df["2"] == True]
+
+voice2_result = (
+    voice2_df
+    .groupby("Date", as_index=False)["recored"]
+    .sum()
+)
+
+print("Voice ID 2")
+print(voice2_result)
+
+# -------------------
+# Voice ID 3
+# -------------------
+voice3_df = df[df["3"] == True]
+
+voice3_result = (
+    voice3_df
+    .groupby("Date", as_index=False)["recored"]
+    .sum()
+)
+
+print("Voice ID 3")
+print(voice3_result)
 
 
-import pandas as pd
+voice1_df = df[df["1"] == True]
 
-# Create hierarchical (grouped) column headers
-columns = pd.MultiIndex.from_tuples([
-    ("Employee", "Name"),
-    ("Employee", "ID"),
-    ("Sales", "Q1"),
-    ("Sales", "Q2"),
-    ("Sales", "Q3"),
-    ("Sales", "Q4"),
-    ("Expenses", "Q1"),
-    ("Expenses", "Q2"),
-    ("Expenses", "Q3"),
-    ("Expenses", "Q4"),
-])
 
-# Sample data
-data = [
-    ["Alice", 101, 120, 135, 150, 160, 60, 65, 70, 75],
-    ["Bob", 102, 110, 125, 140, 155, 55, 60, 68, 72],
-    ["Charlie", 103, 130, 145, 155, 170, 62, 67, 73, 78],
-]
+voice1_result = (
+    voice1_df
+    .groupby("Date", as_index=False)["recored"]
+    .sum()
+)
 
-# Create DataFrame
-df = pd.DataFrame(data, columns=columns)
 
-# Display in console
-print(df)
+final_output = pd.DataFrame({
+    "Jan": [
+        voice1_result.loc[voice1_result["Date"]=="Jan","recored"].iloc[0],
+        voice2_result.loc[voice2_result["Date"]=="Jan","recored"].iloc[0],
+        voice3_result.loc[voice3_result["Date"]=="Jan","recored"].iloc[0]
+    ],
+    "feb": [
+        voice1_result.loc[voice1_result["Date"]=="feb","recored"].iloc[0],
+        voice2_result.loc[voice2_result["Date"]=="feb","recored"].iloc[0],
+        voice3_result.loc[voice3_result["Date"]=="feb","recored"].iloc[0]
+    ]
+})
 
-# Save to Excel (headers will appear as grouped columns)
-df.to_excel("grouped_table.xlsx", index=False)
+final_output.index = [1, 2, 3]
 
-print("\nTable saved as 'grouped_table.xlsx'")
+print(final_output)
 
-from tabulate import tabulate
-
-print(tabulate(df, headers="keys", tablefmt="grid", showindex=False))
